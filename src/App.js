@@ -13,13 +13,10 @@ class App extends Component {
         showPersons: false
     }
 
-    switchNameHandler = (newName) => {
-        this.setState({
-            people: [
-                { name: newName, age: 27 },
-                { name: "Lily", age: 28 },
-                { name: "Oliver", age: 24 }
-            ]})
+    deletePersonHandler = (personIndex) => {
+        const people = this.state.people;
+        people.splice(personIndex, 1);
+        this.setState({people: people});
     }
 
     togglePersonsHandler = () => {
@@ -47,20 +44,15 @@ class App extends Component {
 
         let persons = null;
 
-        if (this.state.showPersons) {
+        if ( this.state.showPersons ) {
             persons = (
                 <div>
-                    <Person
-                        name={this.state.people[0].name}
-                        age={this.state.people[0].age}/>
-                    <Person
-                        name={this.state.people[1].name}
-                        age={this.state.people[1].age}
-                        click={this.switchNameHandler.bind(this, "Miley!!!")}
-                        changed={this.nameChangedHandler}>My Hobbies: Singing</Person>
-                    <Person
-                        name={this.state.people[2].name}
-                        age={this.state.people[2].age}/>
+                    {this.state.people.map((person, index) => {
+                        return <Person
+                            click={() => this.deletePersonHandler(index)}
+                            name={person.name}
+                            age={person.age} />
+                    })}
                 </div>
             );
         }
